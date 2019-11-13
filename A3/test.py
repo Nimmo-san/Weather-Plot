@@ -14,6 +14,6 @@ plotList('DEAD!', list_tuples, 'r', 'DEAD I', 'DEAD II')
 # Shows the plotted graph
 # plt.show()
 
-fakedata = parent_path + '\Data.monthly_nh.txt'
-fakeoutput = parent_path + '/parsed.monthly_nh.txt'
-print(correctFile(fakedata, fakeoutput))
+fake_data = parent_path + '\Data.monthly_nh.txt'
+fake_output = parent_path + '/parsed.monthly_nh.txt'
+print(correctFile(fake_data, fake_output))
