@@ -134,10 +134,13 @@ def correctFile(input_file, output_file):
         string1 = ','.join(line)
         full_data.append(string1)
 
-    print(full_data)
+    # print(full_data)
 
+    for line in full_data:
+        writefile.write(line + '\n')
     toreadfile.close()
     writefile.close()
+
 
 # # file = 'E:/University\Coding\A3ProjectPython\ProjectData\Data.nh.txt'
 # file = '..\A3\Data.nh.txt'
