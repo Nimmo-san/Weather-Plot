@@ -106,6 +106,16 @@ def split_date(data):
     return altered_data
 
 
+def write_File(data, file_opened):
+    if len(data) <= 0:
+        return False
+
+    for line in data:
+        file_opened.write(line + '\n')
+
+    return True
+
+
 def correctFile(input_file, output_file):
     removed_pattern = []
     data = []
@@ -136,10 +146,10 @@ def correctFile(input_file, output_file):
 
     # print(full_data)
 
-    for line in full_data:
-        writefile.write(line + '\n')
+    success = write_File(full_data, writefile)
     toreadfile.close()
     writefile.close()
+    return success
 
 
 # # file = 'E:/University\Coding\A3ProjectPython\ProjectData\Data.nh.txt'
