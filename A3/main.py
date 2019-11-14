@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 
 from functions import plotList, makeList
 
+monthly_files = ['Data.monthly_nh', 'Data.monthly_ns', 'Data.monthly_sh']
 # File data
 file_data = '..\A3/textfiles\Data.nh.txt'
 # Changes into a list of tuples
@@ -14,4 +15,3 @@ plotList(name='Northern hemisphere', color='slateblue',
 plt.savefig('..\A3/images/A3part1.png')
 # Then shows the graph
 plt.show()
-
