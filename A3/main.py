@@ -1,8 +1,15 @@
 import matplotlib.pyplot as plt
 
-from functions import plotList, makeList
+from functions import plotList, makeList, correctFile, makeAverageList, plotWithError
 
-monthly_files = ['Data.monthly_nh', 'Data.monthly_ns', 'Data.monthly_sh']
+parent_path = '..\A3/textfiles'
+IO_monthly_files = ['_nh.txt', '_out.nh.txt', '_ns.txt',
+                    '_out.ns.txt', '_sh.txt', '_out.sh.txt',
+                    '_tropical.txt', '_out.tr.txt']
+monthly_input = '\Data.monthly'
+monthly_output = '/Parsed.monthly'
+colors = {1: 'darkcyan', 2: 'c', 3: 'aqua'}
+
 # File data
 file_data = '..\A3/textfiles\Data.nh.txt'
 # Changes into a list of tuples
@@ -13,5 +20,4 @@ plotList(name='Northern hemisphere', color='slateblue',
          list_tuples=tuples_list, xaxis='year', yaxis='temprature anomalies')
 # Saves the graph
 plt.savefig('..\A3/images/A3part1.png')
-# Then shows the graph
 plt.show()
