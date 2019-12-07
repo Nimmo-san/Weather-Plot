@@ -1,24 +1,44 @@
 import matplotlib.pyplot as plt
 
-from functions import makeList, plotList, correctFile
+from classes import Analysis
+from functions import makeList, plotList, correctFile, makeAverageList, plotWithError
 
+# Constant variables to be used globally
 parent_path = '..\A3/textfiles'
-# IO_monthly_files = ['_nh', '_out.nh', '_ns', '_out.ns', '_sh', '_out.sh', '_tropical', '_out.tropical']
+IO_monthly_files = ['_nh', '_out.nh', '_ns', '_out.ns', '_sh', '_out.sh', '_tropical', '_out.tr']
+test_data = '..\A3/textfiles\FakeData.txt'
+test_output = '..\A3/textfiles/Here.txt'
+monthly_input = '\Data.monthly'
+monthly_output = '/Parsed.monthly'
 
-# The file Data.nh.txt is being run through
-# the makeList function to turn into a list of tuples
+# The test data to be plotted
 data_file = '..\A3/textfiles\Data.nh.txt'
+# Requests for the data in the file to be appended into a list
 list_tuples = makeList(data_file)
-# Passed through the function to be plotted with the given arguments
-plotList('DEAD!', list_tuples, 'r', 'DEAD I', 'DEAD II')
-# Saves the graph with the passed in name as a PNG
-# plt.savefig('..\A3/images/test.png')
-# Shows the plotted graph
-# plt.show()
 
-fake_data = parent_path + '\Data.monthly_nh.txt'
-fake_output = parent_path + '/parsed.monthly_nh.txt'
-print(correctFile(fake_data, fake_output))
+plotList('DEAD!', list_tuples, 'r', 'DEAD I', 'DEAD II')
+# The figure is saved and displayed
+plt.savefig('..\A3/images/test.png')
+plt.show()
+
+print(correctFile(test_data, test_output))
+
+# Iterates through the files stored
+# and aplies the correctFile function
+n = len(IO_monthly_files)
+for i in range(n - 1):
+
+    input_file_index = 2 * (i - 1)
+    output_file_index = 2 * i - 1
+    if input_file_index < 0 and output_file_index < 0:
+        continue
+    if input_file_index > n or output_file_index > n:
+        break
+
+    input_file = parent_path + monthly_input + IO_monthly_files[input_file_index] + '.txt'
+    output_file = parent_path + monthly_output + IO_monthly_files[output_file_index] + '.txt'
+
+    success = correctFile(input_file, output_file)
 
 # Please keep away from this code  from this line till 53, Arigato #
 # def removefile(file):
