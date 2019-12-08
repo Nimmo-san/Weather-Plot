@@ -1,7 +1,9 @@
 import matplotlib.pyplot as plt
 
+from classes import Analysis
 from functions import plotList, makeList, correctFile, makeAverageList, plotWithError
 
+# Constants necessary for the project
 parent_path = '..\A3/textfiles'
 IO_monthly_files = ['_nh.txt', '_out.nh.txt', '_ns.txt',
                     '_out.ns.txt', '_sh.txt', '_out.sh.txt',
@@ -9,6 +11,7 @@ IO_monthly_files = ['_nh.txt', '_out.nh.txt', '_ns.txt',
 monthly_input = '\Data.monthly'
 monthly_output = '/Parsed.monthly'
 colors = {1: 'darkcyan', 2: 'c', 3: 'aqua'}
+tuple_columns = (0, 1, 8, 9, 10, 11)
 
 # File data
 file_data = '..\A3/textfiles\Data.nh.txt'
@@ -111,3 +114,15 @@ plotWithError('trp', 'uncertainty', list_trp, list_trp3, list_trp4, colors[1], c
 plotWithError('trp', 'uncertainty2', list_trp, list_trp1, list_trp2, colors[1], colors[2], 'time(years)', 'temp(c)')
 plt.savefig('..\A3/images/A3part2e.png')
 plt.show()
+
+ana = Analysis('year', 'temprature')
+
+ana.addFile(monthly_output + '_out.nh', 'nh')
+ana.addFile(monthly_output + '_out.sh', 'sh')
+ana.addFile(monthly_output + '_out.tr', 'tr')
+
+ana.updateLists(tuple_columns, 2, 'Type I Uncertainty', 'Type II Uncertainty', 1677, 2037)
+ana.updateLists(tuple_columns, 2, 'Type I Uncertainty', 'Type II Uncertainty', 1917, 2037)
+ana.plotWithErrors(0, 0, 0)
+ana.plotWithErrors(1, 0, 0)
+ana.plotWithErrors(2, 0, 0)

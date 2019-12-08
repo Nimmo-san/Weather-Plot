@@ -30,12 +30,58 @@ class Analysis:
         for data in range(len(self.input_files)):
             print(" -> {}.txt, {}".format(self.input_files[data], self.titles[data]))
 
-        for i in self.list_tuples:
-            print(i)
+            # for i in self.list_tuples:
+            #     print(i)
 
-    def plotListTuples(self, nominalName, uncerName1, uncerName2):
+    def plotWithErrors(self, index_=None, value_=0, key_=''):
         """ Plots the processed data using the plot function after appending it into
             their corresponding lists  """
+        xpoints = []
+        ypoints = []
+        upper_uncertainty = []
+        lower_uncertainty = []
+        upper_uncertainty2 = []
+        lower_uncertainty2 = []
+        if index_ < len(self.list_tuples):
+            for (a, b, c, d, e, f) in self.list_tuples[index_]:
+                xpoints.append(a)
+                ypoints.append(b)
+                upper_uncertainty.append(c)
+                lower_uncertainty.append(d)
+                upper_uncertainty2.append(e)
+                lower_uncertainty2.append(f)
+
+            xpoints = _tofloat(xpoints)
+            upper_uncertainty = _tofloat(upper_uncertainty)
+            lower_uncertainty = _tofloat(lower_uncertainty)
+            upper_uncertainty2 = _tofloat(upper_uncertainty2)
+            lower_uncertainty2 = _tofloat(lower_uncertainty2)
+
+            for i in range(len(self.titles)):
+                if value_ == 2:
+                    plt.fill_between(xpoints, upper_uncertainty2, lower_uncertainty2, color=self.colors['vl'],
+                                     label=self.uncer1[i])
+                    plt.fill_between(xpoints, upper_uncertainty, lower_uncertainty, color=self.colors['me'],
+                                     label=self.uncer2[i])
+                elif value_ == 1:
+                    plt.fill_between(xpoints, upper_uncertainty, lower_uncertainty, color=self.colors['me'],
+                                     label=self.uncer2[i])
+                else:
+                    pass
+                print(i)
+                plt.plot(xpoints, ypoints, color=self.colors['d'], label=self.titles[i])
+                plt.xlabel(self.x_title)
+                plt.ylabel(self.y_title)
+                plt.legend()
+                plt.show()
+        else:
+            print("\n Index out of bounds!")
+        return
+
+    """ # The following function is better
+    def plotListTuples(self, nominalName, uncerName1, uncerName2):
+           #Plots the processed data using the plot function after appending it into
+            #their corresponding lists
         # corresponding lists for the plots
         xpoints = []
         ypoints = []
@@ -68,28 +114,29 @@ class Analysis:
         plt.legend()
         plt.show()
         return
-
+        """
     def updateLists(self, tuple_columns, granularity=0, type_='', type_2='', min_=0, max_=0):
         """ This function will be called to process the opened files and invoke the _formatData
             function to each of the files present in the input_files """
 
         # Iterating through the files and invoking the _formatData function and calling the plotListTuples
         # with the corresponding labels for each of the data sets
+        self.uncer1.append(type_)
+        self.uncer2.append(type_2)
         n = len(self.input_files)
         for i in range(n):
             file = openFile(self.parent_path + self.input_files[i] + '.txt', 'r')
             # opened_Files.append(file)
             if file:
                 lines = [line.rstrip('\n') for line in file]
-                self.list_tuples = self._formatData(data=lines, tuple_=tuple_columns,
-                                                    gra=granularity, min_=min_, max_=max_)
-                # self.list_tuples = files_data
-                self.uncer1.append(type_)
-                self.uncer2.append(type_2)
-                # print(self.titles[i], self.uncer1[i], self.uncer2[i])
-                self.plotListTuples(self.titles[i], self.uncer1[i], self.uncer2[i])
+                files_data = self._formatData(data=lines, tuple_=tuple_columns,
+                                              gra=granularity, min_=min_, max_=max_)
+
+                self.list_tuples.append(files_data)
             else:
                 exit(1)
+        # print(self.list_tuples)
+        return
 
     def to_tuple(self, list_):
         """ Changes the data stored in list_ into tuples """
