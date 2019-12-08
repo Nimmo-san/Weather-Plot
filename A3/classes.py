@@ -4,7 +4,8 @@ from functions import _average, _chunks, _tofloat, to_tuple
 
 
 class Analysis:
-
+    # The init method od this class initiliases some empty
+    # variables to their corresponding variables to be used in this class
     def __init__(self, x='x', y='y'):
         self.x_title = x
         self.y_title = y
@@ -13,19 +14,24 @@ class Analysis:
         self.list_tuples = []
         self.uncer1 = []
         self.uncer2 = []
+        # Dictionary of colors to be used in the plotting of the data sets
         self.colors = {'d': 'm', 'me': 'fuchsia', 'l': 'magenta', 'vl': 'orchid'}
 
     def addFile(self, input_file, title):
+        """ Lets the user add files into the list to be processed by updateLists """
         if input_file and title:
             self.input_files.append(input_file)
             self.titles.append(title)
 
     def printLists(self):
+        """ Prints the input files and their corresponding titles into the console """
         print("\nInput files, titles: \n")
         for data in range(len(self.input_files)):
             print(" -> {}.txt, {}".format(self.input_files[data], self.titles[data]))
 
     def plotListTuples(self):
+        """ Plots the processed data using the plot function after appending it into
+            their corresponding lists  """
         xpoints = []
         ypoints = []
         upper_uncertainty = []
@@ -47,25 +53,26 @@ class Analysis:
         return
 
     def updateLists(self, tuple_columns, granularity=0, type_='', type_2='', min_=0, max_=0):
-
+        """ This function will be called to process the opened files and invoke the _formatData
+            function to each of the files present in the input_files """
         for i in self.input_files:
             file = open(i + '.txt', 'r')
             # opened_Files.append(file)
             lines = [line.rstrip('\n') for line in file]
-            files_data = self._retrieveData(data=lines, tuple_=tuple_columns,
-                                            gra=granularity, min_=min_, max_=max_)
+            files_data = self._formatData(data=lines, tuple_=tuple_columns,
+                                          gra=granularity, min_=min_, max_=max_)
             self.list_tuples = files_data
             self.uncer1.append(type_)
             self.uncer2.append(type_2)
             self.plotListTuples()
 
-    def _retrieveData(self, data, tuple_, gra, min_, max_):
+    def _formatData(self, data, tuple_, gra, min_, max_):
         list_ = []
 
         list_xy = []
         list_u = []
         list_u2 = []
-        # print(len(data))
+
         if min_ >= 0 and max_ <= len(data):
             for elem in range(min_, max_, 1):
                 split = data[elem].split(',')

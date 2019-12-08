@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 
 
 def openFile(file_path, argument):
+    """ Checks if the files exists in the path passed in and returns the opened file
+        with the argument provided """
     file = None
     list_arguments = ['r', 'w', 'w+', 'a', 'rb',
     'r+', 'rb+', 'wb', 'wb+', 'ab', 'a+', 'ab+']
@@ -99,6 +101,7 @@ def _chunks(list_, offset):
 
 def checkSize(n, m, l):
     """ Checks if the given integers are equal to one another """
+    # print("Function checkSize", n, m, l)
     return True if n == m and l == m else False
 
 
@@ -246,7 +249,7 @@ def correctFile(input_file, output_file):
     # Requests for the parameter files to be open for reading and writing
     _readfile = openFile(input_file, 'r')
     _writefile = openFile(output_file, 'w')
-    # Checks if they exist and are opened 
+    # Checks if they exist and are opened
     if _readfile and _writefile:
         pass
     elif _readfile and not _writefile:
@@ -290,7 +293,7 @@ def plotWithError(name, type_s, list_tuples, list_tuples2, list_tuples3, color1=
         pass
     else:
         # Exits if all values are not equal
-        print("Size of list not equal: ", n, m, k)
+        print("Size of lists not equal: ", n, m, k)
         exit(1)
 
     # The following for loops append the data into their corresponding list
@@ -311,11 +314,13 @@ def plotWithError(name, type_s, list_tuples, list_tuples2, list_tuples3, color1=
     x = _tofloat(x)
 
     # fill_between used to draw the error bands
+    plt.legend()
     plt.fill_between(x, err_low_variation, err_upp_variation, color=color2, label=type_s)
     # Shows the legend before the nominal curve
-    plt.legend()
+    # plt.legend() # when there is multiple plots then uncomment this line of code
     # Plots the nominal curve
     plt.plot(x, y, color=color1, label=name)
+    # plt.legend() # when there is only one plot of one data set, one plot is related to the number of times this function is called
     # Labels the x and y-axis
     plt.xlabel(x_name)
     plt.ylabel(y_name)
