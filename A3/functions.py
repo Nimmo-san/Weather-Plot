@@ -296,7 +296,7 @@ def plotWithError(name, type_s, list_tuples, list_tuples2, list_tuples3, color1=
 
 
 def _plot(list_, list_2, list_3, type_, name_, nominalColour, uncertaintyColour):
-    """ This function is part of plotWithError """
+    """ This function is an extension of plotWithError """
     err_low_variation = []
     err_upp_variation = []
     x = []
