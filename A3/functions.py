@@ -89,9 +89,6 @@ def write_tofile(data, file):
         file.write(line + '\n')
     return True
 
-def to_tuple(self, list_):
-    return [tuple(element) for element in list_]
-
 
 def _chunks(list_, offset):
     """ Divides a list into smaller chunks using the yield function """

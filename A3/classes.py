@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-from functions import _average, _chunks, _tofloat, to_tuple
+from functions import _average, _chunks, _tofloat, openFile
 
 
 class Analysis:
@@ -14,8 +14,9 @@ class Analysis:
         self.list_tuples = []
         self.uncer1 = []
         self.uncer2 = []
+        self.parent_path = '..\A3/textfiles'
         # Dictionary of colors to be used in the plotting of the data sets
-        self.colors = {'d': 'm', 'me': 'fuchsia', 'l': 'magenta', 'vl': 'orchid'}
+        self.colors = {'d': 'darkcyan', 'me': 'c', 'l': 'aqua', 'vl': 'cyan'}
 
     def addFile(self, input_file, title):
         """ Lets the user add files into the list to be processed by updateLists """
@@ -29,51 +30,85 @@ class Analysis:
         for data in range(len(self.input_files)):
             print(" -> {}.txt, {}".format(self.input_files[data], self.titles[data]))
 
-    def plotListTuples(self):
+        for i in self.list_tuples:
+            print(i)
+
+    def plotListTuples(self, nominalName, uncerName1, uncerName2):
         """ Plots the processed data using the plot function after appending it into
             their corresponding lists  """
+        # corresponding lists for the plots
         xpoints = []
         ypoints = []
         upper_uncertainty = []
         lower_uncertainty = []
+        upper_uncertainty2 = []
+        lower_uncertainty2 = []
 
+        # Iterating through the list and appending the data points to their lists
         for (a, b, c, d, e, f) in self.list_tuples:
             xpoints.append(a)
             ypoints.append(b)
             upper_uncertainty.append(c)
             lower_uncertainty.append(d)
+            upper_uncertainty2.append(e)
+            lower_uncertainty2.append(f)
 
+        # Changing the lists into floats to be used by the fill_between function
         xpoints = _tofloat(xpoints)
-        ypoints = _tofloat(ypoints)
         upper_uncertainty = _tofloat(upper_uncertainty)
         lower_uncertainty = _tofloat(lower_uncertainty)
-        plt.fill_between(xpoints, upper_uncertainty, lower_uncertainty, color='m')
-        plt.plot(xpoints, ypoints, 'ro', markersize=2)
+        upper_uncertainty2 = _tofloat(upper_uncertainty2)
+        lower_uncertainty2 = _tofloat(lower_uncertainty2)
+
+        # Plotting the errors and the nominal values
+        plt.fill_between(xpoints, upper_uncertainty2, lower_uncertainty2, color=self.colors['vl'], label=uncerName1)
+        plt.fill_between(xpoints, upper_uncertainty, lower_uncertainty, color=self.colors['me'], label=uncerName2)
+        plt.plot(xpoints, ypoints, color=self.colors['d'], label=nominalName)
+        # Shows the legend/labels for each of the data sets and display the plots
+        plt.legend()
         plt.show()
         return
 
     def updateLists(self, tuple_columns, granularity=0, type_='', type_2='', min_=0, max_=0):
         """ This function will be called to process the opened files and invoke the _formatData
             function to each of the files present in the input_files """
-        for i in self.input_files:
-            file = open(i + '.txt', 'r')
+
+        # Iterating through the files and invoking the _formatData function and calling the plotListTuples
+        # with the corresponding labels for each of the data sets
+        n = len(self.input_files)
+        for i in range(n):
+            file = openFile(self.parent_path + self.input_files[i] + '.txt', 'r')
             # opened_Files.append(file)
-            lines = [line.rstrip('\n') for line in file]
-            files_data = self._formatData(data=lines, tuple_=tuple_columns,
-                                          gra=granularity, min_=min_, max_=max_)
-            self.list_tuples = files_data
-            self.uncer1.append(type_)
-            self.uncer2.append(type_2)
-            self.plotListTuples()
+            if file:
+                lines = [line.rstrip('\n') for line in file]
+                self.list_tuples = self._formatData(data=lines, tuple_=tuple_columns,
+                                                    gra=granularity, min_=min_, max_=max_)
+                # self.list_tuples = files_data
+                self.uncer1.append(type_)
+                self.uncer2.append(type_2)
+                # print(self.titles[i], self.uncer1[i], self.uncer2[i])
+                self.plotListTuples(self.titles[i], self.uncer1[i], self.uncer2[i])
+            else:
+                exit(1)
+
+    def to_tuple(self, list_):
+        """ Changes the data stored in list_ into tuples """
+        return [tuple(element) for element in list_]
 
     def _formatData(self, data, tuple_, gra, min_, max_):
-        list_ = []
+        """ Retrieves the data and formats it to the correct format to be
+            averaged over and plotted """
 
-        list_xy = []
-        list_u = []
-        list_u2 = []
+        # Empty lists for the data points
+        list_ = []  # all values
+        list_xy = []  # nominal values
+        list_u = []  # type uncertainty 1
+        list_u2 = []  # type uncertainty 2
 
+        # Checks if the min_ and max_ are within bounds
         if min_ >= 0 and max_ <= len(data):
+            # Iterates through the list between the max and min and adds it
+            # into the list if its corresponding column is found in the tuple of columns passed in
             for elem in range(min_, max_, 1):
                 split = data[elem].split(',')
                 for j in range(len(split)):
@@ -81,10 +116,14 @@ class Analysis:
                         list_.append(split[j])
         else:
             print(min_, max_, "Out of bounds!")
+            exit(1)
 
+        # print(list_)
+        # Divides it into a list of every two elements in each sublist and changes the sublists into tuples
         list_ = _chunks(list_, 2)
-        list_ = to_tuple(list_)
+        list_ = self.to_tuple(list_)
 
+        # Iterates through the list to acquire the nominal values and their corresponding errors
         size = len(list_)
         for i in range(1, size):
             in1 = 3 * (i - 1)  # nominal values
@@ -97,10 +136,12 @@ class Analysis:
             list_u.append(list_[in2])
             list_u2.append(list_[in3])
 
+        # Averages over the lists after dividing it yet again into the granularity passed in
         list_xy = _average(list(_chunks(list_xy, gra)))
         list_u = _average(list(_chunks(list_u, gra)))
         list_u2 = _average(list(_chunks(list_u2, gra)))
 
+        # Clears the unnecessary list and adds the values into one final list to be returned
         list_.clear()
         for i in range(len(list_xy)):
             tuple_ = list_xy[i] + list_u[i] + list_u2[i]

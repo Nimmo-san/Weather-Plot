@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 
+from classes import Analysis
 from functions import makeList, plotList, correctFile, makeAverageList, plotWithError
 
 # Constant variables to be used globally
@@ -12,6 +13,7 @@ test_output = '..\A3/textfiles/Here.txt'
 monthly_input = '\Data.monthly'
 monthly_output = '/Parsed.monthly'
 colours = {1: 'darkcyan', 2: 'c', 3: 'aqua'}
+tuple_columns = (0, 1, 8, 9, 10, 11)
 
 # The test data to be plotted
 data_file = '..\A3/textfiles\Data.nh.txt'
@@ -55,8 +57,18 @@ plotList('p3', period3, 'r', 'x', 'y')
 # Shows the plotted list
 plt.show()
 
+# Columns (0,1), (8,9) are used to plot the function with the correspoding error
+# using plotWithError function
 nominal = makeAverageList(parent_path + '\Parsed.monthly_out.nh.txt', 0, 1, 12)
 uncertainty = makeAverageList(parent_path + '\Parsed.monthly_out.nh.txt', 0, 8, 12)
 uncertainty2 = makeAverageList(parent_path + '\Parsed.monthly_out.nh.txt', 0, 9, 12)
 plotWithError('nominal', 'uncertainty', nominal, uncertainty, uncertainty2, colours[1], colours[3])
 plt.show()
+
+# An instance of the class Analysis, two correct format files and their correspoding
+# titles are added and printed respectively
+ana = Analysis()
+ana.addFile(monthly_output + '_out.ns', 'ns')
+ana.addFile(monthly_output + '_out.tr', 'tr')
+ana.updateLists(tuple_columns, 48, 'type I uncertainty', 'type II uncertainty', 0, 2037)
+ana.printLists()
