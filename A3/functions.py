@@ -281,10 +281,6 @@ def plotWithError(name, type_s, list_tuples, list_tuples2, list_tuples3, color1=
                   y_name='Y'):
     """ It plots lists of tuples with the nominal values and their corresponding
     lower and upper variation """
-    err_low_variation = []
-    err_upp_variation = []
-    x = []
-    y = []
     # The corresponding length of each list is stored to be checked
     n = len(list_tuples)
     m = len(list_tuples2)
@@ -295,17 +291,29 @@ def plotWithError(name, type_s, list_tuples, list_tuples2, list_tuples3, color1=
         # Exits if all values are not equal
         print("Size of lists not equal: ", n, m, k)
         exit(1)
+    _plot(list_=list_tuples, list_2=list_tuples2, list_3=list_tuples3,
+          type_=type_s, name_=name, nominalColour=color1, uncertaintyColour=color2)
+    plt.xlabel(x_name)
+    plt.ylabel(y_name)
+    return
 
+
+def _plot(list_, list_2, list_3, type_, name_, nominalColour, uncertaintyColour):
+    """ This function is part of plotWithError """
+    err_low_variation = []
+    err_upp_variation = []
+    x = []
+    y = []
     # The following for loops append the data into their corresponding list
     # to be plotted
-    for (xp, yp) in list_tuples:
+    for (xp, yp) in list_:
         x.append(xp)
         y.append(yp)
 
-    for (xerr, yerr) in list_tuples2:
+    for (xerr, yerr) in list_2:
         err_upp_variation.append(yerr)
 
-    for (xerr, yerr) in list_tuples3:
+    for (xerr, yerr) in list_3:
         err_low_variation.append(yerr)
 
     # Converted to floats to be drawn to the screen
@@ -314,14 +322,11 @@ def plotWithError(name, type_s, list_tuples, list_tuples2, list_tuples3, color1=
     x = _tofloat(x)
 
     # fill_between used to draw the error bands
-    plt.legend()
-    plt.fill_between(x, err_low_variation, err_upp_variation, color=color2, label=type_s)
+    plt.fill_between(x, err_low_variation, err_upp_variation, color=uncertaintyColour, label=type_)
     # Shows the legend before the nominal curve
-    # plt.legend() # when there is multiple plots then uncomment this line of code
+    plt.legend()  # when there is multiple plots then uncomment this line of code
     # Plots the nominal curve
-    plt.plot(x, y, color=color1, label=name)
+    plt.plot(x, y, color=nominalColour, label=name_)
     # plt.legend() # when there is only one plot of one data set, one plot is related to the number of times this function is called
     # Labels the x and y-axis
-    plt.xlabel(x_name)
-    plt.ylabel(y_name)
     return
