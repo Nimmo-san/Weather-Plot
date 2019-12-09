@@ -73,4 +73,5 @@ ana.addFile(monthly_output + '_out.tr', 'tr')
 ana.updateLists(tuple_columns, 48, 'type I uncertainty', 'type II uncertainty', 0, 2037)
 ana.printLists()
 
-ana.plotWithErrors(3, 1, 0)
+ana.plotWithErrors(1, 1, 0)
+ana.scatterPlot(0, 1, 'me')

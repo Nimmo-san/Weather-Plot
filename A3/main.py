@@ -115,14 +115,39 @@ plotWithError('trp', 'uncertainty2', list_trp, list_trp1, list_trp2, colors[1], 
 plt.savefig('..\A3/images/A3part2e.png')
 plt.show()
 
+# An instance of the class to be used for plotting
 ana = Analysis('year', 'temprature')
 
+# Files are added into the list of files to be plotted
 ana.addFile(monthly_output + '_out.nh', 'nh')
 ana.addFile(monthly_output + '_out.sh', 'sh')
 ana.addFile(monthly_output + '_out.tr', 'tr')
 
+# The updateLists function is called with the given rows and granularity
 ana.updateLists(tuple_columns, 2, 'Type I Uncertainty', 'Type II Uncertainty', 1677, 2037)
 ana.updateLists(tuple_columns, 2, 'Type I Uncertainty', 'Type II Uncertainty', 1917, 2037)
+
+# plotWithErrors function is invoked for each of the data sets that were added and their plots are saved
 ana.plotWithErrors(0, 0, 0)
+plt.savefig('..\A3/images/A3part3a.png')
+plt.show()
+
 ana.plotWithErrors(1, 0, 0)
+plt.savefig('..\A3/images/A3part3b.png')
+plt.show()
+
 ana.plotWithErrors(2, 0, 0)
+plt.savefig('..\A3/images/A3part3c.png')
+plt.show()
+
+# updateLists function invoked again with different granularity to test for correlation between reigns
+# using the scatterPlot function for each data set
+ana.updateLists(tuple_columns, 2, 'Type I Uncertainty', 'Type II Uncertainty', 1677, 2037)
+ana.scatterPlot(0, 1, 'me')
+ana.scatterPlot(1, 2, 'me')
+ana.scatterPlot(0, 2, 'me')
+
+ana.updateLists(tuple_columns, 12, 'Type I Uncertainty', 'Type II Uncertainty', 1917, 2037)
+ana.scatterPlot(0, 1, 'me')
+ana.scatterPlot(1, 2, 'me')
+ana.scatterPlot(0, 2, 'me')

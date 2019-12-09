@@ -36,13 +36,16 @@ class Analysis:
     def plotWithErrors(self, index_=None, value_=0, key_=''):
         """ Plots the processed data using the plot function after appending it into
             their corresponding lists  """
+        # corresponding lists for the plots
         xpoints = []
         ypoints = []
         upper_uncertainty = []
         lower_uncertainty = []
         upper_uncertainty2 = []
         lower_uncertainty2 = []
-        if index_ < len(self.list_tuples):
+
+        # Iterating through the list and appending the data points to their lists after checking the index
+        if not (not (index_ >= 0) or not (index_ < len(self.list_tuples))):
             for (a, b, c, d, e, f) in self.list_tuples[index_]:
                 xpoints.append(a)
                 ypoints.append(b)
@@ -57,23 +60,20 @@ class Analysis:
             upper_uncertainty2 = _tofloat(upper_uncertainty2)
             lower_uncertainty2 = _tofloat(lower_uncertainty2)
 
-            for i in range(len(self.titles)):
-                if value_ == 2:
-                    plt.fill_between(xpoints, upper_uncertainty2, lower_uncertainty2, color=self.colors['vl'],
-                                     label=self.uncer1[i])
-                    plt.fill_between(xpoints, upper_uncertainty, lower_uncertainty, color=self.colors['me'],
-                                     label=self.uncer2[i])
-                elif value_ == 1:
-                    plt.fill_between(xpoints, upper_uncertainty, lower_uncertainty, color=self.colors['me'],
-                                     label=self.uncer2[i])
-                else:
-                    pass
-                print(i)
-                plt.plot(xpoints, ypoints, color=self.colors['d'], label=self.titles[i])
-                plt.xlabel(self.x_title)
-                plt.ylabel(self.y_title)
-                plt.legend()
-                plt.show()
+            if value_ == 2:
+                plt.fill_between(xpoints, upper_uncertainty2, lower_uncertainty2, color=self.colors['vl'],
+                                 label=self.uncer1[index_])
+                plt.fill_between(xpoints, upper_uncertainty, lower_uncertainty, color=self.colors['me'],
+                                 label=self.uncer2[index_])
+            elif value_ == 1:
+                plt.fill_between(xpoints, upper_uncertainty, lower_uncertainty, color=self.colors['me'],
+                                 label=self.uncer1[index_])
+            else:
+                pass
+            plt.plot(xpoints, ypoints, color=self.colors['d'], label=self.titles[index_])
+            plt.xlabel(self.x_title)
+            plt.ylabel(self.y_title)
+            plt.legend()
         else:
             print("\n Index out of bounds!")
         return
@@ -121,8 +121,7 @@ class Analysis:
 
         # Iterating through the files and invoking the _formatData function and calling the plotListTuples
         # with the corresponding labels for each of the data sets
-        self.uncer1.append(type_)
-        self.uncer2.append(type_2)
+
         n = len(self.input_files)
         for i in range(n):
             file = openFile(self.parent_path + self.input_files[i] + '.txt', 'r')
@@ -132,6 +131,8 @@ class Analysis:
                 files_data = self._formatData(data=lines, tuple_=tuple_columns,
                                               gra=granularity, min_=min_, max_=max_)
 
+                self.uncer1.append(type_)
+                self.uncer2.append(type_2)
                 self.list_tuples.append(files_data)
             else:
                 exit(1)
@@ -196,5 +197,18 @@ class Analysis:
 
         return list_
 
-    def scatterPlot(self, one, two, color='m'):
+    def scatterPlot(self, list_1, list_2, key_='m'):
+        xc = []
+        yc = []
+        for (a, b, c, d, e, f) in self.list_tuples[list_1]:
+            xc.append(b)
+
+        for (a, b, c, d, e, f) in self.list_tuples[list_2]:
+            yc.append(b)
+
+        plt.plot(xc, yc, self.colors[key_] + 'o', label=self.titles[list_1] + ' ' + self.titles[list_2], markersize=2)
+        plt.xlabel('{} temp'.format(self.titles[list_1]))
+        plt.ylabel('{} temp'.format(self.titles[list_2]))
+        plt.legend()
+        plt.show()
         return
