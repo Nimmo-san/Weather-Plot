@@ -74,4 +74,8 @@ ana.updateLists(tuple_columns, 48, 'type I uncertainty', 'type II uncertainty', 
 ana.printLists()
 
 ana.plotWithErrors(1, 1, 0)
+plt.show()
 ana.scatterPlot(0, 1, 'me')
+plt.show()
+
+# oddFormat(parent_path + '\Data.sea.nh.txt')

@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
 from classes import Analysis
-from functions import plotList, makeList, correctFile, makeAverageList, plotWithError
+from functions import plotList, makeList, correctFile, makeAverageList, plotWithError, oddFormat
 
 # Constants necessary for the project
 parent_path = '..\A3/textfiles'
@@ -151,3 +151,18 @@ ana.updateLists(tuple_columns, 12, 'Type I Uncertainty', 'Type II Uncertainty', 
 ana.scatterPlot(0, 1, 'me')
 ana.scatterPlot(1, 2, 'me')
 ana.scatterPlot(0, 2, 'me')
+
+ana1 = Analysis()
+data1 = oddFormat(parent_path + '\Data.land.nh.txt', parent_path + '\Parsed.land_out.nh.txt')
+data2 = oddFormat(parent_path + '\Data.land.ns.txt', parent_path + '\Parsed.land_out.ns.txt')
+data3 = oddFormat(parent_path + '\Data.land.sh.txt', parent_path + '\Parsed.land_out.sh.txt')
+data4 = oddFormat(parent_path + '\Data.sea.nh.txt', parent_path + '\Parsed.sea_out.nh.txt')
+data5 = oddFormat(parent_path + '\Data.land.ns.txt', parent_path + '\Parsed.sea_out.ns.txt')
+data6 = oddFormat(parent_path + '\Data.land.sh.txt', parent_path + '\Parsed.sea_out.sh.txt')
+
+ana1.addFile(parent_path + '\Parsed.land_out.nh.txt', 'land nh')
+ana1.addFile(parent_path + '\Parsed.land_out.ns.txt', 'land ns')
+ana1.addFile(parent_path + '\Parsed.land_out.sh.txt', 'land sh')
+ana1.addFile(parent_path + '\Parsed.sea_out.nh.txt', 'sea nh')
+ana1.addFile(parent_path + '\Parsed.sea_out.ns.txt', 'sea ns')
+ana1.addFile(parent_path + '\Parsed.sea_out.sh.txt', 'sea sh')

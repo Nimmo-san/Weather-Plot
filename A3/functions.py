@@ -16,7 +16,8 @@ def openFile(file_path, argument):
                 file = open(file_path, argument)
                 return file
             except FileNotFoundError:
-                return None
+                print("Good bye!")
+                exit(1)
         print("Given argument: {} isn't predefined!".format(argument))
     else:
         print("File {} could not be found!".format(file_path))
@@ -326,4 +327,16 @@ def _plot(list_, list_2, list_3, type_, name_, nominalColour, uncertaintyColour)
     plt.plot(x, y, color=nominalColour, label=name_)
     # plt.legend() # when there is only one plot of one data set, one plot is related to the number of times this function is called
     # Labels the x and y-axis
+    return
+
+
+def oddFormat(file_path, output):
+    """ Picks the odd indexes """
+    file = openFile(file_path, 'r')
+    file2 = openFile(output, 'w')
+    lines = [line.rstrip('\n') for line in file]
+    splitData = [lines[i].lstrip(' ') for i in range(0, len(lines), 2)]
+    # print(splitData)
+    list_ = _removePattern(splitData)
+    write_tofile(list_, file2)
     return

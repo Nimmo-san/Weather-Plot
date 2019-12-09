@@ -210,5 +210,4 @@ class Analysis:
         plt.xlabel('{} temp'.format(self.titles[list_1]))
         plt.ylabel('{} temp'.format(self.titles[list_2]))
         plt.legend()
-        plt.show()
         return
