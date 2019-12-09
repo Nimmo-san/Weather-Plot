@@ -158,31 +158,54 @@ def _retrieve(list_):
         list_data.append(tuple_)
     return list_data
 
+def makeList(fullpath):
+    list1 = []
+    if type(fullpath) == str:
+        #checks if the parameter given is a string
+        fr = open(fullpath, 'r')
+        data = [line.rstrip('\n') for line in fr]
+        for i in data:
+            l = i.split(' ')
+            #makes a list with the space in between
+            tuple1 = (l[0], l[1])
+            #makes a tuple from the first and second values of list
+            list1.append(tuple1)
+    return list1
 
-def makeList(full_path):
-    """ Makes a list of the data with the given file path, passed in as argument """
-    # print(data_full_path)
-    full_list = []
-    argument = ' '
-    # Checks if the file exists or not
-    f = openFile(full_path, 'r')
-    if not f:
-        exit(1)
+# def makeList(full_path):
+#     """ Makes a list of the data with the given file path, passed in as argument """
+#     # print(data_full_path)
+#     full_list = []
+#     argument = ' '
+#     # Checks if the file exists or not
+#     f = openFile(full_path, 'r')
+#     if not f:
+#         exit(1)
 
-    # Reads the data from the list and appends it to a list
-    lines = [line.rstrip('\n') for line in f]
-    f.close()
-    # Iteration through the data and splits by a space
-    for line in lines:
-        try:
-            split = line.split(argument)
-        except:
-            pass
-        # Saves it to a tuple to be appended to a list
-        year_data_tuple = (split[0], split[1])
-        full_list.append(year_data_tuple)
-    # Checks if list is empty, if not it returns the list
-    return full_list if len(full_list) != 0 else None
+#     # Reads the data from the list and appends it to a list
+#     lines = [line.rstrip('\n') for line in f]
+#     f.close()
+#     # Iteration through the data and splits by a space
+#     for line in lines:
+#         try:
+#             split = line.split(argument)
+#         except:
+#             pass
+#         # Saves it to a tuple to be appended to a list
+#         year_data_tuple = (split[0], split[1])
+#         full_list.append(year_data_tuple)
+#     # Checks if list is empty, if not it returns the list
+#     return full_list if len(full_list) != 0 else None
+def makeList(fullpath):
+    list1 = []
+    if type(fullpath) == str:
+        fr = open(fullpath, 'r')
+        data = [line.rstrip('\n') for line in fr]
+        for i in data:
+            l = i.split(' ')
+            tuple1 = (l[0], l[1])
+            list1.append(tuple1)
+    return list1
 
 
 def plotList(name, list_tuples, color, xaxis, yaxis):
