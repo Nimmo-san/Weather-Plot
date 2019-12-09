@@ -200,13 +200,16 @@ class Analysis:
     def scatterPlot(self, list_1, list_2, key_='m'):
         xc = []
         yc = []
+        # Reads the x value and adds it to the list
         for (a, b, c, d, e, f) in self.list_tuples[list_1]:
             xc.append(b)
-
+        # Gets the y value and adds it to the new list
         for (a, b, c, d, e, f) in self.list_tuples[list_2]:
             yc.append(b)
 
+        # Plots the values obtained from the list
         plt.plot(xc, yc, self.colors[key_] + 'o', label=self.titles[list_1] + ' ' + self.titles[list_2], markersize=2)
+        # They are labeled
         plt.xlabel('{} temp'.format(self.titles[list_1]))
         plt.ylabel('{} temp'.format(self.titles[list_2]))
         plt.legend()

@@ -355,11 +355,16 @@ def _plot(list_, list_2, list_3, type_, name_, nominalColour, uncertaintyColour)
 
 def oddFormat(file_path, output):
     """ Picks the odd indexes """
+    # Opens the files for read and write respectively
     file = openFile(file_path, 'r')
     file2 = openFile(output, 'w')
+    # reads the data in the first file
     lines = [line.rstrip('\n') for line in file]
+    # Splits the first character of the data to have separate lists of the data
     splitData = [lines[i].lstrip(' ') for i in range(0, len(lines), 2)]
     # print(splitData)
+    # Invokes the removePattern function to remove the spaces between the elements in the data
     list_ = _removePattern(splitData)
+    # Then writes it to a file
     write_tofile(list_, file2)
     return

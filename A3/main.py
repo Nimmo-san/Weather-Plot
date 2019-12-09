@@ -164,7 +164,9 @@ ana.scatterPlot(0, 2, 'me')
 plt.savefig('..\A3/images/CTnhtr2.png')
 plt.show()
 
+# A new instance of the class
 ana1 = Analysis()
+# Invokes the oddFormat function for each of the new data sets
 data1 = oddFormat(parent_path + '\Data.land.nh.txt', parent_path + '\Parsed.land_out.nh.txt')
 data2 = oddFormat(parent_path + '\Data.land.ns.txt', parent_path + '\Parsed.land_out.ns.txt')
 data3 = oddFormat(parent_path + '\Data.land.sh.txt', parent_path + '\Parsed.land_out.sh.txt')
@@ -172,6 +174,7 @@ data4 = oddFormat(parent_path + '\Data.sea.nh.txt', parent_path + '\Parsed.sea_o
 data5 = oddFormat(parent_path + '\Data.land.ns.txt', parent_path + '\Parsed.sea_out.ns.txt')
 data6 = oddFormat(parent_path + '\Data.land.sh.txt', parent_path + '\Parsed.sea_out.sh.txt')
 
+# Adds the files into the new instance class Analysis
 ana1.addFile(parent_path + '\Parsed.land_out.nh.txt', 'land nh')
 ana1.addFile(parent_path + '\Parsed.land_out.ns.txt', 'land ns')
 ana1.addFile(parent_path + '\Parsed.land_out.sh.txt', 'land sh')
