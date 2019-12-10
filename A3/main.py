@@ -128,39 +128,39 @@ ana.updateLists(tuple_columns, 2, 'Type I Uncertainty', 'Type II Uncertainty', 1
 ana.updateLists(tuple_columns, 2, 'Type I Uncertainty', 'Type II Uncertainty', 1917, 2037)
 
 # plotWithErrors function is invoked for each of the data sets that were added and their plots are saved
-ana.plotWithErrors(0, 0, 0)
+ana.plotWithErrors(0, 0)
 plt.savefig('..\A3/images/A3part3a.png')
 plt.show()
 
-ana.plotWithErrors(1, 0, 0)
+ana.plotWithErrors(1, 0)
 plt.savefig('..\A3/images/A3part3b.png')
 plt.show()
 
-ana.plotWithErrors(2, 0, 0)
+ana.plotWithErrors(2, 0)
 plt.savefig('..\A3/images/A3part3c.png')
 plt.show()
 
 # updateLists function invoked again with different granularity to test for correlation between reigns
 # using the scatterPlot function for each data set
 ana.updateLists(tuple_columns, 2, 'Type I Uncertainty', 'Type II Uncertainty', 1677, 2037)
-ana.scatterPlot(0, 1, 'me')
+ana.scatterPlot(0, 1, 'me', None, True)
 plt.savefig('..\A3/images/CTnhsh.png')
 plt.show()
-ana.scatterPlot(1, 2, 'me')
+ana.scatterPlot(1, 2, 'me', None, True)
 plt.savefig('..\A3/images/CTshtr.png')
 plt.show()
-ana.scatterPlot(0, 2, 'me')
+ana.scatterPlot(0, 2, 'me', None, True)
 plt.savefig('..\A3/images/CTnhtr.png')
 plt.show()
 
-ana.updateLists(tuple_columns, 24, 'Type I Uncertainty', 'Type II Uncertainty', 1917, 2037)
-ana.scatterPlot(0, 1, 'me')
+ana.updateLists(tuple_columns, 12, 'Type I Uncertainty', 'Type II Uncertainty', 1917, 2037)
+ana.scatterPlot(0, 1, 'me', None, True)
 plt.savefig('..\A3/images/CTnhsh2.png')
 plt.show()
-ana.scatterPlot(1, 2, 'me')
+ana.scatterPlot(1, 2, 'me', None, True)
 plt.savefig('..\A3/images/CTshtr2.png')
 plt.show()
-ana.scatterPlot(0, 2, 'me')
+ana.scatterPlot(0, 2, 'me', None, True)
 plt.savefig('..\A3/images/CTnhtr2.png')
 plt.show()
 
@@ -175,9 +175,45 @@ data5 = oddFormat(parent_path + '\Data.land.ns.txt', parent_path + '\Parsed.sea_
 data6 = oddFormat(parent_path + '\Data.land.sh.txt', parent_path + '\Parsed.sea_out.sh.txt')
 
 # Adds the files into the new instance class Analysis
-ana1.addFile(parent_path + '\Parsed.land_out.nh.txt', 'land nh')
-ana1.addFile(parent_path + '\Parsed.land_out.ns.txt', 'land ns')
-ana1.addFile(parent_path + '\Parsed.land_out.sh.txt', 'land sh')
-ana1.addFile(parent_path + '\Parsed.sea_out.nh.txt', 'sea nh')
-ana1.addFile(parent_path + '\Parsed.sea_out.ns.txt', 'sea ns')
-ana1.addFile(parent_path + '\Parsed.sea_out.sh.txt', 'sea sh')
+ana1.addFile('\Parsed.land_out.nh', 'land nh')
+ana1.addFile('\Parsed.land_out.ns', 'land ns')
+ana1.addFile('\Parsed.land_out.sh', 'land sh')
+ana1.addFile('\Parsed.sea_out.nh', 'sea nh')
+ana1.addFile('\Parsed.sea_out.ns', 'sea ns')
+ana1.addFile('\Parsed.sea_out.sh', 'sea sh')
+
+ana1.updateLists(tuple_columns, 24, 'Type I U', 'Type II U', 0, 170)
+ana1.plotWithErrors(0, 0)
+ana1.plotWithErrors(2, 0, 'me')
+ana1.plotWithErrors(3, 0, 'l')
+ana1.plotWithErrors(5, 0, 'vl')
+plt.show()
+
+# clearing the previous data for the new data
+ana1.list_tuples.clear()
+# Invoking the updateLists function with different values for the granularity
+ana1.updateLists(tuple_columns, 48, 'Type I U', 'Type II U', 0, 170)
+# Calling plotWithErrors to plot the corresponding lists without errors
+ana1.plotWithErrors(0, 0)
+ana1.plotWithErrors(2, 0, 'm')
+ana1.plotWithErrors(3, 0, 'me')
+ana1.plotWithErrors(5, 0, 'vl')
+plt.show()
+
+ana1.list_tuples.clear()
+ana1.updateLists(tuple_columns, 120, 'Type I U', 'Type II U', 0, 170)
+ana1.plotWithErrors(0, 0)
+ana1.plotWithErrors(2, 0, 'm')
+ana1.plotWithErrors(3, 0, 'me')
+ana1.plotWithErrors(5, 0, 'vl')
+plt.show()
+
+ana1.list_tuples.clear()
+tuple_columns = (0, 1, 13)
+ana1.updateLists(tuple_columns, 24, 'Type I U', 'Type II U', 0, 170)
+ana1.scatterPlot(0, 3, 'm', ('land nh temp', 'sea nh temp'), False)
+plt.savefig('..\A3/images/LandSeaNH.png')
+plt.show()
+ana1.scatterPlot(2, 5, 'm', ('land sh temp', 'sea sh temp'), False)
+plt.savefig('..\A3/images/LandSeaSH.png')
+plt.show()

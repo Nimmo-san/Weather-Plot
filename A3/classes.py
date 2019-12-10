@@ -16,7 +16,7 @@ class Analysis:
         self.uncer2 = []
         self.parent_path = '..\A3/textfiles'
         # Dictionary of colors to be used in the plotting of the data sets
-        self.colors = {'d': 'darkcyan', 'me': 'c', 'l': 'aqua', 'vl': 'cyan'}
+        self.colors = {'d': 'darkcyan', 'me': 'c', 'l': 'aqua', 'vl': 'cyan', 'm': 'm'}
 
     def addFile(self, input_file, title):
         """ Lets the user add files into the list to be processed by updateLists """
@@ -33,7 +33,7 @@ class Analysis:
             # for i in self.list_tuples:
             #     print(i)
 
-    def plotWithErrors(self, index_=None, value_=0, key_=''):
+    def plotWithErrors(self, index_=None, value_=0, key_='d'):
         """ Plots the processed data using the plot function after appending it into
             their corresponding lists  """
         # corresponding lists for the plots
@@ -70,7 +70,7 @@ class Analysis:
                                  label=self.uncer1[index_])
             else:
                 pass
-            plt.plot(xpoints, ypoints, color=self.colors['d'], label=self.titles[index_])
+            plt.plot(xpoints, ypoints, color=self.colors[key_], label=self.titles[index_])
             plt.xlabel(self.x_title)
             plt.ylabel(self.y_title)
             plt.legend()
@@ -197,7 +197,7 @@ class Analysis:
 
         return list_
 
-    def scatterPlot(self, list_1, list_2, key_='m'):
+    def scatterPlot(self, list_1, list_2, key_='d', axis=('x', 'y'), normal=False):
         xc = []
         yc = []
         # Reads the x value and adds it to the list
@@ -210,7 +210,11 @@ class Analysis:
         # Plots the values obtained from the list
         plt.plot(xc, yc, self.colors[key_] + 'o', label=self.titles[list_1] + ' ' + self.titles[list_2], markersize=2)
         # They are labeled
-        plt.xlabel('{} temp'.format(self.titles[list_1]))
-        plt.ylabel('{} temp'.format(self.titles[list_2]))
+        if normal:
+            plt.xlabel('{} temp'.format(self.titles[list_1]))
+            plt.ylabel('{} temp'.format(self.titles[list_2]))
+        else:
+            plt.xlabel(axis[0])
+            plt.ylabel(axis[1])
         plt.legend()
         return
